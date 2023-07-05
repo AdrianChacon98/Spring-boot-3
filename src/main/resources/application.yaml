@@ -1,0 +1,52 @@
+server:
+  port: 8000
+
+#Database configuration
+spring:
+  jpa:
+    open-in-view: true
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost/pedido?serverTimezone=UTC
+    dbname: pedido
+    username: root
+    password: $chancho2012$
+    tomcat:
+      max-wait: 20000
+      max-active: 50
+      max-idle: 20
+      min-idle: 15
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cursosprogramacion44@gmail.com
+    password: ejepspzjtqqrueke
+    protocol: smtp
+    tls: true
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: false
+        smtp:
+          ssl:
+            trust: "smtp.gmail.com"
+            enable: false
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+          socketFactoryFallback: false
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+
+#spring cloud eureka
+
+
+
+#JWT
+jwt:
+  secret: "adrian"
+  time-expires: "1800000" # Miliseconds 1000 * 60 seconds * 30 to have 30 minutes token expires section
