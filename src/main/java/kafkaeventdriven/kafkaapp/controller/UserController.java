@@ -1,6 +1,7 @@
 package kafkaeventdriven.kafkaapp.controller;
 
 
+import kafkaeventdriven.kafkaapp.model.User;
 import kafkaeventdriven.kafkaapp.model.UserRequest;
 import kafkaeventdriven.kafkaapp.model.UserResponse;
 import kafkaeventdriven.kafkaapp.service.UserServiceImp;
@@ -92,7 +93,7 @@ public class UserController {
         try{
             String message = userServiceImp.confirmTokenEmail(token);
 
-
+            logger.info(token);
 
             response.put("Message",message);
 
@@ -110,6 +111,22 @@ public class UserController {
         }
         response.put("HttpStatus",HttpStatus.OK.value());
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<Map<String,Object>> getUser(@PathVariable("id") Integer id)
+    {
+        try{
+
+            Map<String,Object> response = userServiceImp.getUserId(id);
+
+
+
+
+        }catch (Exception e){
+
+        }
     }
 
 

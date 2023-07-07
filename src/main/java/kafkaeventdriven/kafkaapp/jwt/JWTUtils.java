@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.spec.SecretKeySpec;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +84,7 @@ public class JWTUtils {
 
             //Set claims values
             claims.put("username",user.getUsername());
-            claims.put("Role",user.getRole());
+            claims.put("Role",user.getRole().getRoleName());
             claims.put("Authorities",grantedAuthorityList.stream().map(authority->authority.getAuthority()).collect(Collectors.toList()));
 
             //create jwt
@@ -90,21 +92,26 @@ public class JWTUtils {
             if(!timeMS.isEmpty()){
 
                 //Set time expiration to the token
-                long expireMs = nowMillis + Long.parseLong(timeMS);
-                Date expireAt = new Date(expireMs);
+               /* long expireMs = nowMillis + Long.parseLong(timeMS);
+                Date expireAt = new Date(expireMs);*/
+
+                Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+                Instant expirationAt = issuedAt.plus(30,ChronoUnit.MINUTES);
+                Instant expirationOneDay = issuedAt.plus(24,ChronoUnit.HOURS);
+
 
                 access_token = Jwts.builder()
-                        .setIssuedAt(new Date(System.currentTimeMillis()))
+                        .setIssuedAt(Date.from(issuedAt))
                         .setClaims(claims)
                         .setSubject(user.getEmail())
-                        .setExpiration(expireAt)
+                        .setExpiration(Date.from(expirationAt))
                         .signWith(signing,signatureAlgorithm).compact();
 
 
                 refresh_token = Jwts.builder()
-                        .setIssuedAt(new Date(System.currentTimeMillis()))
+                        .setIssuedAt(Date.from(issuedAt))
                         .setSubject(user.getEmail())
-                        .setExpiration(new Date(System.currentTimeMillis() + (Long.parseLong((timeMS)) * 2) * 24))//set 1 day
+                        .setExpiration(Date.from(expirationOneDay))//set 1 day new Date(System.currentTimeMillis() + (Long.parseLong((timeMS)) * 2) * 24)
                         .signWith(signing, signatureAlgorithm).compact();
 
             }

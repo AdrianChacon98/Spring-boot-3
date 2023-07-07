@@ -47,10 +47,10 @@ public class User implements UserDetails {
     private String verificationCode;
 
 
-    @OneToOne(mappedBy = "userRole",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userRole",cascade = CascadeType.ALL)
     private Role role;
 
-    @OneToMany(mappedBy = "userAuthority", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userAuthority", cascade = CascadeType.ALL)
     private List<Authorities> authorities;
 
 
@@ -79,9 +79,9 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        List<GrantedAuthority> grantedAuthorities = this.getAuthorities()
+        List<GrantedAuthority> grantedAuthorities = this.authorities
                 .stream()
-                .map(role->new SimpleGrantedAuthority(role.getAuthority()))
+                .map(role->new SimpleGrantedAuthority(role.getAuthorityName()))
                 .collect(Collectors.toList());
 
         return grantedAuthorities;

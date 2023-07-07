@@ -48,5 +48,5 @@ spring:
 
 #JWT
 jwt:
-  secret: "adrian"
+  secret: "84306DAFECF9E3F6239A8BA6638DBF233C7A9D1FA438FEC43AD978115E3D4A07"
   time-expires: "1800000" # Miliseconds 1000 * 60 seconds * 30 to have 30 minutes token expires section
